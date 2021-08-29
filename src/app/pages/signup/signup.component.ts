@@ -11,6 +11,7 @@ import { finalize } from 'rxjs/operators';
 import { readAndCompressImage } from 'browser-image-resizer';
 import { ToastService } from 'angular-toastify';
 import { config } from 'src/app/utils/config';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -29,6 +30,7 @@ export class SignupComponent implements OnInit {
     private db: AngularFireDatabase,
     private storage: AngularFireStorage,
     private toast: ToastService,
+    private authservice :AuthService
   ) {
 
   }
@@ -40,30 +42,36 @@ export class SignupComponent implements OnInit {
   onSubmit(f: NgForm) {
     const { email, password, instaid, country, bio, name } = f.form.value;
     // further checking of these fields ro be done here 
-    // its an observable so we can add as many then as we want ... 
-    // the se
-    // this.authservice.signUp(email, password)
-    //   .then((res) => {
-    //     console.log(res);
-    //     const { uid } = res.user
-    //     this.db.object(`users${uid}`).set({
-    //       id: uid,
-    //       name: name,
-    //       instaid: instaid,
-    //       country: country,
-    //       bio: bio,
-    //       picture: this.picture
-    //     })
-    //   })
-    //   .then(() => {
-    //     this.router.navigateByUrl('/');
-    //     this.toast.success("SignUp Sucess");
-    //   })
-    //   .catch(
-    //     (err) => {
-    //       this.toast.error(err.value);
-    //     }
-    //   )
+
+    // its an observable so we can add as many "then" as we want ... 
+    // we added 2 then .. one to redirect and other to save data
+    // then last is to catch the error
+    this.authservice.signUp(email, password)
+      .then((res) => {
+        console.log(res);
+        const { uid } = res.user
+        this.db.object(`/users/${uid}`).set({
+          id: uid,
+          name: name,
+          instaid: instaid,
+          country: country,
+          bio: bio,
+          picture: this.picture
+        });
+      })
+      .then(() => {
+        this.router.navigateByUrl('/');
+        this.toast.success("SignUp Sucess");
+      })
+      .catch(
+        (err) => {
+          console.log();
+          
+          this.toast.error(err.message);
+          console.log(err);
+          
+        }
+      );
   }
 
   async uploadFile(event) {
@@ -88,7 +96,7 @@ export class SignupComponent implements OnInit {
       finalize(() => {
         fileref.getDownloadURL().subscribe((picture_url_from_firebase) => {
           this.picture = picture_url_from_firebase;
-          this.toast.success("image up;oaded sucessfully");
+          this.toast.success("image uploaded sucessfully");
         })
       })
     ).subscribe();

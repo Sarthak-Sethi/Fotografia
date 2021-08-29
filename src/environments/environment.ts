@@ -7,6 +7,7 @@ export const environment = {
   firebase : {
     apiKey: "AIzaSyCYpj4b9N9_MkC18bMPfr6rwwqu_KGM9Pc",
     authDomain: "github-finder-angular.firebaseapp.com",
+    databaseURL: "https://github-finder-angular-default-rtdb.firebaseio.com",
     projectId: "github-finder-angular",
     storageBucket: "github-finder-angular.appspot.com",
     messagingSenderId: "659856429041",
@@ -14,11 +15,3 @@ export const environment = {
   }
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

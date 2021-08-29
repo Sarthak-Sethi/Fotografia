@@ -16,12 +16,13 @@ import { SignupComponent } from './pages/signup/signup.component';
 
 import { ToastService, AngularToastifyModule } from 'angular-toastify'; 
 import { FormsModule } from '@angular/forms';
-
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { environment } from 'src/environments/environment';
 // FireBAse Related imports 
 import { AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireModule} from '@angular/fire';
-
-import { environment } from 'src/environments/environment';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 
 
@@ -41,10 +42,16 @@ import { environment } from 'src/environments/environment';
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     AngularToastifyModule,
     FormsModule,
+
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+    
+    BrowserAnimationsModule,
     
   ],
   providers: [ToastService],
