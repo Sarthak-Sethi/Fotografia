@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.css']
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit,OnChanges {
 
   @Input()
   post ;
@@ -23,9 +23,18 @@ export class PostsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  ngOnChanges(): void {
+    if (this.post.vote) {
+      Object.values(this.post.vote).map((val: any) => {
+        if (val.upvote===1) {
+          this.upvote += 1;
+        }
+      });
+    }
+  }
 
   upvotePost(){
-    this.db.object(`/posts/${this.uid}/vote/${this.uid}`).set({ upvote : this.upvote+1});
+   this.db.object(`/posts/${this.post.id}/vote/${this.uid}`).set({ upvote : 1});
   }
   getInstaUrl(){
     console.log(this.post?.instaId);
