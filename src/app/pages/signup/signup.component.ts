@@ -21,7 +21,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  picture: String = "https://i.ibb.co/2q8dh3b/logo.png";
+  picture: String ="https://i.ibb.co/hW0T0ZT/signup.gif" ;
   uploadPercent: number = null;
 
 
@@ -42,14 +42,15 @@ export class SignupComponent implements OnInit {
   onSubmit(f: NgForm) {
     const { email, password, instaid, country, bio, name } = f.form.value;
     // further checking of these fields ro be done here 
-
+      console.log(instaid);
+      
     // its an observable so we can add as many "then" as we want ... 
     // we added 2 then .. one to redirect and other to save data
     // then last is to catch the error
     this.authservice.signUp(email, password)
       .then((res) => {
         console.log(res);
-        const { uid } = res.user
+        const { uid } = res.user;
         this.db.object(`/users/${uid}`).set({
           id: uid,
           name: name,
